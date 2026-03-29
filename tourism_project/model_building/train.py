@@ -34,27 +34,40 @@ ytest = pd.read_csv(ytest_path)
 
 
 # One-hot encode 'Type' and scale numeric features
+# Define feature groups
 numeric_features = [
-    'Age',
-    'DurationOfPitch',
-    'NumberOfPersonVisiting',
-    'NumberOfFollowups',
-    'PreferredPropertyStar',
-    'NumberOfTrips',
-    'PitchSatisfactionScore'
+    "Age",
+    "DurationOfPitch",
+    "NumberOfPersonVisiting",
+    "NumberOfFollowups",
+    "PreferredPropertyStar",
+    "NumberOfTrips",
+    "PitchSatisfactionScore",
+    "NumberOfChildrenVisiting",
+    "MonthlyIncome"
 ]
-categorical_features = ['TypeofContact', 'CityTier', 'Occupation', 'Gender', 'ProductPitched', 'MaritalStatus', 'Designation', 'Passport']
 
+categorical_features = [
+    "TypeofContact",
+    "CityTier",
+    "Occupation",
+    "Gender",
+    "ProductPitched",
+    "MaritalStatus",
+    "Passport",
+    "OwnCar",
+    "Designation"
+]
+
+# Build preprocessor
+preprocessor = make_column_transformer(
+    (StandardScaler(), numeric_features),
+    (OneHotEncoder(handle_unknown="ignore"), categorical_features)
+)
 
 # Set the clas weight to handle class imbalance
 class_weight = ytrain.value_counts()[0] / ytrain.value_counts()[1]
 class_weight
-
-# Define the preprocessing steps
-preprocessor = make_column_transformer(
-    (StandardScaler(), numeric_features),
-    (OneHotEncoder(handle_unknown='ignore'), categorical_features)
-)
 
 # Define base XGBoost model
 xgb_model = xgb.XGBClassifier(scale_pos_weight=class_weight, random_state=42)
