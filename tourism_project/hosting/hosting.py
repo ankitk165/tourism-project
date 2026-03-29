@@ -1,7 +1,7 @@
 from huggingface_hub import HfApi
 import os
 
-repo_id = "ankit079/tourism-project"
+repo_id = "ankit079/tourism-pred-project"
 repo_type = "space"
 
 # Initialize API client
@@ -18,7 +18,7 @@ except RepositoryNotFoundError:
 
 api.upload_folder(
     folder_path="tourism_project/deployment",     # the local folder containing your files
-    repo_id="ankit079/tourism-project",          # the target repo
+    repo_id="ankit079/tourism-pred-project",          # the target repo
     repo_type="space",                      # dataset, model, or space
     path_in_repo="",                          # optional: subfolder path inside the repo
 )
